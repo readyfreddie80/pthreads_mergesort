@@ -3,8 +3,9 @@
 #include <time.h>
 #include <pthread.h>
 #include <assert.h>
+#include <sys/time.h>
 
-
+int n = 0;
 static int count = 0;
 
 pthread_mutex_t lock;
@@ -62,6 +63,7 @@ void* merge_sort(void *context) {
 
     int child_created = 0;
     pthread_t child;
+    void *returnValue;
 
     pthread_mutex_lock(&lock);
     if(count - 1 > 0) {
@@ -79,18 +81,22 @@ void* merge_sort(void *context) {
     r_buff = (int*)merge_sort(&right_ctx);
 
     if(child_created == 1) {
-         pthread_join(child, NULL);
+         pthread_join(child, &returnValue);
          pthread_mutex_lock(&lock);
          count++;
          pthread_mutex_unlock(&lock);
+         l_buff = (int*)returnValue;  
+		
     }
 
-    l_buff = r_buff;
+
     int *target = l_buff == ctx->up ? ctx->down : ctx->up;
 
 
     int l_cur = ctx->left, r_cur = middle + 1;
+
     for (int i = ctx->left; i <= ctx->right; i++){
+
         if (l_cur <= middle && r_cur <= ctx->right) {
             if (l_buff[l_cur] < r_buff[r_cur]){
                 target[i] = l_buff[l_cur];
@@ -107,8 +113,9 @@ void* merge_sort(void *context) {
             target[i] = r_buff[r_cur];
             r_cur++;
         }
-    }
 
+    }
+ 
     return target;
 }
 
@@ -120,6 +127,7 @@ int main(int argc, char** argv) {
     int N = atoi(argv[1]);
     int M = atoi(argv[2]);
     int P = atoi(argv[3]);
+    n = N;
 
     int *up = (int*)malloc(sizeof(int) * N);
 
