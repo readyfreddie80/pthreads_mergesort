@@ -5,7 +5,6 @@
 #include <assert.h>
 #include <sys/time.h>
 
-int n = 0;
 static int count = 0;
 
 pthread_mutex_t lock;
@@ -127,7 +126,6 @@ int main(int argc, char** argv) {
     int N = atoi(argv[1]);
     int M = atoi(argv[2]);
     int P = atoi(argv[3]);
-    n = N;
 
     int *up = (int*)malloc(sizeof(int) * N);
 
