@@ -127,6 +127,7 @@ int main(int argc, char** argv) {
     int M = atoi(argv[2]);
     int P = atoi(argv[3]);
 
+
     int *up = (int*)malloc(sizeof(int) * N);
 
     initialization(up, N, 0, 200);
@@ -169,3 +170,4 @@ int main(int argc, char** argv) {
     free(down);
     return 0;
 }
+
